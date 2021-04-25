@@ -6,11 +6,10 @@ const client = mqtt.connect('mqtt://broker.hivemq.com', {
   keepAlive: 1800000,
   cleanSession: false,
 })
+let level = 0
 
 // message
-let message = JSON.stringify(
-  data.features[0].geometry.coordinates[count].reverse(),
-)
+let message = data.features[0].geometry
 const topic = 'testtopic/aplha'
 
 //handle incoming messages
@@ -37,8 +36,10 @@ if (!client.connected) {
 }
 //publish
 function publish(topic, msg, options) {
-  let level = 0
-  console.log('publishing', msg, client.connected, count)
+  if (level === 0) msg = JSON.stringify(msg.coordinates[count].reverse())
+  else msg = JSON.stringify(msg.coordinates[count])
+
+  console.log('publishing', msg, client.connected, count, level)
   if (client.connected == true) {
     client.publish(topic, msg, options)
   }
@@ -64,6 +65,6 @@ console.log('subscribing to topics')
 client.subscribe(topic) //object
 const timer_id = setInterval(function () {
   publish(topic, message, options)
-}, 1500)
+}, 1300)
 //notice this is printed even before we connect
 console.log('end of script')
