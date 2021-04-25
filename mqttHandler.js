@@ -58,7 +58,7 @@ class MqttHandler {
         retain: true,
         qos: 2,
       })
-    }, 10)
+    }, 1300)
   }
 
   publish(topic, msg, options) {
