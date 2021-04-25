@@ -1,10 +1,10 @@
-var express = require('express')
-var app = express()
-var mqttHandler = require('./mqttHandler')
+const express = require('express')
+const app = express()
+const mqttHandler = require('./mqttHandler')
 
-var mqttClient = new mqttHandler()
-mqttClient.connect()
+const mqttClient = new mqttHandler()
 
-var server = app.listen(3002, function () {
+const server = app.listen(3002, function () {
   console.log('app running on port.', server.address().port)
+  mqttClient.connect()
 })
